@@ -18,7 +18,6 @@ class Button(QToolButton):  # 버튼에 대한 것, QToolButton -> QPushButton �
         self.img = img # img 받아야 할 것 같아서 만들었어
         self.clicked.connect(callback)
 
-    def getImage(self):
         self.img = QtGui.QImage('ghost.png')
         self.setIcon(QtGui.QIcon('ghost.png'))
 
@@ -36,7 +35,7 @@ class Button(QToolButton):  # 버튼에 대한 것, QToolButton -> QPushButton �
         """
         
         start = time.time()
-        while ((time.time() - start) == 2):  # 7초간 첫째줄과 셋째줄이 변경됨
+        while ((time.time() - start) == 2):  # 2초간 첫째줄과 셋째줄이 변경됨
 
         GhostLocation = random.randint(0, 8)  # maindriver랑 합쳐서 귀신이 나타날 장소 구하기
         randomGhost = random.choice(['normalGst', 'normalGst', 'normalGst', 'normalGst', 'starGst', 'starGst',
@@ -56,9 +55,9 @@ class Button(QToolButton):  # 버튼에 대한 것, QToolButton -> QPushButton �
     """
 
 import threading
-class AsyncTask:  # 이미지는 안 뜨지만, init 해서 오류는 안 남  https://1byte.tistory.com/18 시간 랜덤
-    def __init__(self):
-        pass
+class AsyncTask(QPushButton):  # 이미지는 안 뜨지만, init 해서 오류는 안 남  https://1byte.tistory.com/18 시간 랜덤
+    def __init__(self, parent=None):
+        super().__init__(parent)
 
     def TaskA(self):
         threading.Timer(4, self.TaskA).start() # 4초 후
@@ -66,6 +65,11 @@ class AsyncTask:  # 이미지는 안 뜨지만, init 해서 오류는 안 남  h
         GhostLocation.setIcon(QtGui.QIcon('ghost.png'))  # Button 하나를 골라서 ghost.png 이미지 넣기.. 인데 왜 안되지?
 
         # https://makersweb.net/python/1098 이건 뭔지 잘 모르겟는데 잘하면 도움될듯
+
+        """
+        randomGhost = random.choice(['normalGst', 'normalGst', 'normalGst', 'normalGst', 'starGst', 'starGst',
+                                     'blindGst'])  # maindriver랑 합쳐서 어떤 귀신이 나타날지 구하기
+        """
 
 
 class GhostWarrior(QWidget):
@@ -94,6 +98,8 @@ class GhostWarrior(QWidget):
             self.digitButton[i].setIconSize(QtCore.QSize(150, 150))  # 버튼 사이즈 150X150
 
         numLayout = QGridLayout()
+        mainLayout.addLayout(numLayout, 1, 0)
+
         numLayout.addWidget(self.digitButton[0], 0, 0)
         self.digitButton[0].setShortcut("Q")  # key랑 버튼이랑 연결!!
         numLayout.addWidget(self.digitButton[1], 0, 1)
@@ -112,55 +118,37 @@ class GhostWarrior(QWidget):
         self.digitButton[7].setShortcut("X")
         numLayout.addWidget(self.digitButton[8], 2, 2)
         self.digitButton[8].setShortcut("C")
-        """
-        def countdown(t):  # 타이머인데 이거 넣으니까 동작이 안돼.. 왜지? while들어가니까 자꾸 동작 안돼
-            while t:
-                mins, secs = divmod(t, 60)
-                timeformat = '{:02d}:{:02d}'.format(mins, secs)
-                # print(timeformat)
-                self.display = QLineEdit(timeformat)
-                time.sleep(1)
-                t -= 1
-            self.display = QLineEdit('End!')
 
-        countdown(120)
-        """
+        # 코드 줄이려고 이렇게 했더니 버튼이 6개만 떠서 막아뒀어
+        # digitList = ["Q", "W", "E", "A", "S", "D", "Z", "X", "C"]
+        # for j in range(9):
+        #     if j > 3:
+        #         numLayout.addWidget(self.digitButton[j], 0, j % 3)
+        #     elif j > 6:
+        #         numLayout.addWidget(self.digitButton[j], 1, j % 3)
+        #     else:
+        #         numLayout.addWidget(self.digitButton[j], 2, j % 3)
+        #     self.digitButton[j].setShortcut(digitList[j])
+
+        # def countdown(t):  # 타이머인데 이거 넣으니까 동작이 안돼.. 왜지? while들어가니까 자꾸 동작 안돼
+        #     while t:
+        #         mins, secs = divmod(t, 60)
+        #         timeformat = '{:02d}:{:02d}'.format(mins, secs)
+        #         # print(timeformat)
+        #         self.display = QLineEdit(timeformat)
+        #         time.sleep(1)
+        #         t -= 1
+        #     self.display = QLineEdit('End!')
+        #
+        # countdown(120)
+
         # 살려내 살려내 살려내 self.GhostLocation.setIcon(QtGui.QIcon('ghost.png'))
 
-        """
-        # 2초동안 임의의 버튼 선택해서 귀신 그림 나타나게 하기
-        start = time.time()
-        while ((time.time() - start) == 2):  # 2초간
-            GhostLocation = self.digitButton[random.randint(0, 8)] # 귀신이 나타날 장소
-            GhostLocation.setIcon(QtGui.QIcon('ghost.png')) # Button 하나를 골라서 ghost.png 이미지 넣기.. 인데 왜 안되지?
-        """
-        """
-        randomGhost = random.choice(['normalGst', 'normalGst', 'normalGst', 'normalGst', 'starGst', 'starGst',
-                                     'blindGst'])  # maindriver랑 합쳐서 어떤 귀신이 나타날지 구하기
-        """
-
-        # self.digitButton[0].setIcon(QtGui.QIcon('ghost.png'))
-
         mainLayout.addLayout(numLayout, 1, 0)
-        """
-
-        class AsyncTask():
-            def TaskA(self):
-                threading.Timer(4, self.TaskA).start()
-                GhostLocation = self.digitButton[random.randint(0, 8)]  # 귀신이 나타날 장소
-                GhostLocation.setIcon(QtGui.QIcon('ghost.png'))  # Button 하나를 골라서 ghost.png 이미지 넣기.. 인데 왜 안되지?
-        """
-        """
-        randomGhost = random.choice(['normalGst', 'normalGst', 'normalGst', 'normalGst', 'starGst', 'starGst',
-                                     'blindGst'])  # maindriver랑 합쳐서 어떤 귀신이 나타날지 구하기
-        """
 
         # self.initUI()
 
     # def initUI(self):
-
-
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
