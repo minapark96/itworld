@@ -6,8 +6,7 @@ from PyQt5 import QtCore
 import random
 
 from qtpy import QtGui
-from PyQt5.QtCore import QTimer, QTime # 추가
-from PyQt5.QtWidgets import QPushButton # 추가
+
 import time
 
 #버튼 기능 설정
@@ -25,37 +24,28 @@ class Button(QToolButton):
 
 class GhostWarrior(QWidget):
 
-    def __init__(self, parent=None):
+    def __init__(self, t, parent=None):
         super().__init__(parent)
+        self.t = t
 
         # Display Window 06 - 2 계산기 UI 설정
         self.display = QLabel("", self)
 
-        self.timer = QTimer(self)
-        self.timer.setInterval(1000)
-        self.timer.timeout.connect(self.timeout)
-
-        self.btnStart = QPushButton("시작")
-        self.btnStart.clicked.connect(self.onStartButtonClicked)
-
-        self.bntStop = QPushButton("종료")
-        self.btnStop.clicked.connect(self.onStopButtonClicked)
-        # mins, secs = divmod(t, 60)
-        # timeformat = '{:02d}:{:02d}'.format(mins, secs)
-        # self.display.setText(timeformat)
-        # while t:
-        #     self.display.setText('')  # label에 적혀있던 시간을 지운다.
-        #     time.sleep(1)
-        #     t -= 1  # 1초가 줄어든다.
-        #     self.display.setText(timeformat)  # label에 1초 줄어든 시간을 적는다.
-        # self.display.setText('End!')  # 120초가 지나면 end! 를 띄운다.
+        # 타이머인데 자꾸 내 의도와는 다르게 2분 있다가 ui가 뜨고, 뜨고나면 이미 end!라고 적힌 상태이다. 왜이럴까?
+        mins, secs = divmod(self.t, 60)
+        timeformat = '{:02d}:{:02d}'.format(mins, secs)
+        self.display.setText(timeformat)
+        while self.t > 0:
+            self.display.setText('')  # label에 적혀있던 시간을 지운다.
+            time.sleep(1)
+            self.t -= 1  # 1초가 줄어든다.
+            self.display.setText(timeformat)  # label에 1초 줄어든 시간을 적는다.
+        self.display.setText('End!')  # 120초가 지나면 end! 를 띄운다.
 
         # 메인 창 설정
         mainLayout = QGridLayout()
         mainLayout.setSizeConstraint(QLayout.SetFixedSize)
         mainLayout.addWidget(self.display, 0, 0, 1, 1)
-        mainLayout.addWidget(self.btnStart, 0, 0, 2, 1) # 추가
-        mainLayout.addWidget(self.btnStop, 0, 0, 2, 2) # 추가
 
         self.setLayout(mainLayout)
         self.setWindowTitle("Ghost Warrior")
@@ -92,35 +82,27 @@ class GhostWarrior(QWidget):
         # 귀신 나타나게 하기 이 부분은 나중에 수정하도록 한다.
         GhostLocation = self.digitButton[random.randint(0, 8)]  # 귀신이 나타날 장소 랜덤으로 정하기
         GhostLocation.setIcon(QtGui.QIcon('ghost.png'))  # Button 하나를 골라서 ghost.png 이미지 넣기
+        GhostLocation.setIcon(QtGui.QIcon('greenEye.png'))
+        GhostLocation.setIcon(QtGui.QIcon('bigEye.png'))
 
-        self.digitButton[0].setIcon(QtGui.QIcon('ghost.png'))
+        items = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+        while self.t != 0:
+            random.shuffle(items)
+            self.digitButton[items[0]].setIcon(QtGui.QIcon('ghost.png'))
+            self.digitButton[items[1]].setIcon(QtGui.QIcon('ghost.png'))
+            self.digitButton[items[2]].setIcon(QtGui.QIcon('greenEye.png'))
+            self.digitButton[items[3]].setIcon(QtGui.QIcon('greenEye.png'))
+            self.digitButton[items[4]].setIcon(QtGui.QIcon('greenEye.png'))
+            self.digitButton[items[5]].setIcon(QtGui.QIcon('ghost.png'))
+            self.digitButton[items[6]].setIcon(QtGui.QIcon('bigEye.png'))
+            self.digitButton[items[7]].setIcon(QtGui.QIcon('bigEye.png'))
+            self.digitButton[items[8]].setIcon(QtGui.QIcon('ghost.png'))
 
         mainLayout.addLayout(numLayout, 1, 0)
-
-        #타이머인데 자꾸 내 의도와는 다르게 2분 있다가 ui가 뜨고, 뜨고나면 이미 end!라고 적힌 상태이다. 왜이럴까?
-
-    def timeout(self):
-        sender = self.sender()
-        currentTime = QTime.currentTime().toString("mm:ss")
-
-        if id(sender) == id(self.timer):
-            self.display(currentTime)
-
-        if currentTime == 0:
-            self.display("Time Over")
-
-    def printTime(self):
-        time = 0
-        time += 1
-        print(time)
-    timeVar = QTimer()
-    timeVar.setInterval(10)
-    timeVar.timeout.connect(printTime)
-    timeVar.start()
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    game = GhostWarrior()
+    game = GhostWarrior(10)
     game.show()
     sys.exit(app.exec_())
