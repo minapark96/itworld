@@ -37,10 +37,10 @@ class GhostWarrior(QWidget):
         self.display.setText(timeformat)
         while self.t > 0:
             self.display.setText('')  # label에 적혀있던 시간을 지운다.
-            time.sleep(1)
+            #time.sleep(1)
             self.t -= 1  # 1초가 줄어든다.
             self.display.setText(timeformat)  # label에 1초 줄어든 시간을 적는다.
-        self.display.setText('End!')  # 120초가 지나면 end! 를 띄운다.
+        #self.display.setText('End!')  # 120초가 지나면 end! 를 띄운다.
 
         # 메인 창 설정
         mainLayout = QGridLayout()
@@ -81,28 +81,46 @@ class GhostWarrior(QWidget):
 
         # 귀신 나타나게 하기 이 부분은 나중에 수정하도록 한다.
         GhostLocation = self.digitButton[random.randint(0, 8)]  # 귀신이 나타날 장소 랜덤으로 정하기
-        GhostLocation.setIcon(QtGui.QIcon('ghost.png'))  # Button 하나를 골라서 ghost.png 이미지 넣기
-        GhostLocation.setIcon(QtGui.QIcon('greenEye.png'))
-        GhostLocation.setIcon(QtGui.QIcon('bigEye.png'))
 
-        items = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-        while self.t != 0:
-            random.shuffle(items)
-            self.digitButton[items[0]].setIcon(QtGui.QIcon('ghost.png'))
-            self.digitButton[items[1]].setIcon(QtGui.QIcon('ghost.png'))
-            self.digitButton[items[2]].setIcon(QtGui.QIcon('greenEye.png'))
-            self.digitButton[items[3]].setIcon(QtGui.QIcon('greenEye.png'))
-            self.digitButton[items[4]].setIcon(QtGui.QIcon('greenEye.png'))
-            self.digitButton[items[5]].setIcon(QtGui.QIcon('ghost.png'))
-            self.digitButton[items[6]].setIcon(QtGui.QIcon('bigEye.png'))
-            self.digitButton[items[7]].setIcon(QtGui.QIcon('bigEye.png'))
-            self.digitButton[items[8]].setIcon(QtGui.QIcon('ghost.png'))
+        a = QtGui.QIcon('ghost.png')
+        b = QtGui.QIcon('greenEye.png')
+        c = QtGui.QIcon('bigEye.png')
+
+        GhostLocation.setIcon(a)  # Button 하나를 골라서 ghost.png 이미지 넣기
+        GhostLocation.setIcon(b)
+        GhostLocation.setIcon(c)
+
+        ghostType = [a, a, a, a, b, b, b, c, c]
+        random.shuffle(ghostType)
+        self.digitButton[0].setIcon(ghostType[0])
+        self.digitButton[1].setIcon(ghostType[1])
+        self.digitButton[2].setIcon(ghostType[2])
+        self.digitButton[3].setIcon(ghostType[3])
+        self.digitButton[4].setIcon(ghostType[4])
+        self.digitButton[5].setIcon(ghostType[5])
+        self.digitButton[6].setIcon(ghostType[6])
+        self.digitButton[7].setIcon(ghostType[7])
+        self.digitButton[8].setIcon(ghostType[8])
+
+
+        # items = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+        # while self.t != 0:
+        #     random.shuffle(items)
+        #     self.digitButton[items[0]].setIcon(QtGui.QIcon('ghost.png'))
+        #     self.digitButton[items[1]].setIcon(QtGui.QIcon('ghost.png'))
+        #     self.digitButton[items[2]].setIcon(QtGui.QIcon('greenEye.png'))
+        #     self.digitButton[items[3]].setIcon(QtGui.QIcon('greenEye.png'))
+        #     self.digitButton[items[4]].setIcon(QtGui.QIcon('greenEye.png'))
+        #     self.digitButton[items[5]].setIcon(QtGui.QIcon('ghost.png'))
+        #     self.digitButton[items[6]].setIcon(QtGui.QIcon('bigEye.png'))
+        #     self.digitButton[items[7]].setIcon(QtGui.QIcon('bigEye.png'))
+        #     self.digitButton[items[8]].setIcon(QtGui.QIcon('ghost.png'))
 
         mainLayout.addLayout(numLayout, 1, 0)
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    game = GhostWarrior(10)
+    game = GhostWarrior(1)
     game.show()
     sys.exit(app.exec_())
