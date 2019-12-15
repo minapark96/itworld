@@ -86,12 +86,12 @@ class GhostWarrior(QWidget):
         b = QtGui.QIcon('greenEye.png')
         c = QtGui.QIcon('bigEye.png')
 
-        GhostLocation.setIcon(a)  # Button 하나를 골라서 ghost.png 이미지 넣기
+        GhostLocation.setIcon(a)
         GhostLocation.setIcon(b)
         GhostLocation.setIcon(c)
 
         ghostType = [a, a, a, a, b, b, b, c, c]
-        random.shuffle(ghostType)
+        random.shuffle(ghostType) # ghostType 의 리스트 원소를 섞는 역할
         self.digitButton[0].setIcon(ghostType[0])
         self.digitButton[1].setIcon(ghostType[1])
         self.digitButton[2].setIcon(ghostType[2])
@@ -101,20 +101,6 @@ class GhostWarrior(QWidget):
         self.digitButton[6].setIcon(ghostType[6])
         self.digitButton[7].setIcon(ghostType[7])
         self.digitButton[8].setIcon(ghostType[8])
-
-
-        # items = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-        # while self.t != 0:
-        #     random.shuffle(items)
-        #     self.digitButton[items[0]].setIcon(QtGui.QIcon('ghost.png'))
-        #     self.digitButton[items[1]].setIcon(QtGui.QIcon('ghost.png'))
-        #     self.digitButton[items[2]].setIcon(QtGui.QIcon('greenEye.png'))
-        #     self.digitButton[items[3]].setIcon(QtGui.QIcon('greenEye.png'))
-        #     self.digitButton[items[4]].setIcon(QtGui.QIcon('greenEye.png'))
-        #     self.digitButton[items[5]].setIcon(QtGui.QIcon('ghost.png'))
-        #     self.digitButton[items[6]].setIcon(QtGui.QIcon('bigEye.png'))
-        #     self.digitButton[items[7]].setIcon(QtGui.QIcon('bigEye.png'))
-        #     self.digitButton[items[8]].setIcon(QtGui.QIcon('ghost.png'))
 
         mainLayout.addLayout(numLayout, 1, 0)
 
