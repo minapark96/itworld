@@ -18,7 +18,6 @@ class Actions(QDialog): # https://riptutorial.com/pyqt5/example/29500/basic-pyqt
         self.setWindowTitle('GhostWarrior')
         self.progress = QProgressBar(self)
         self.progress.setGeometry(0, 0, 300, 25)
-        #self.progress.setMaximum(100)
         self.progress.setMinimum(0)
         self.button = QPushButton('Start', self)
         self.button.move(0, 30)
