@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QToolButton, QLabel
 from PyQt5.QtWidgets import QLayout, QGridLayout
 from PyQt5 import QtCore
 import random
+#from gstScore import Score
 
 from qtpy import QtGui
 
@@ -53,56 +54,61 @@ class GhostWarrior(QWidget):
 
         # Digit Buttons
         #버튼을 만들고 버튼 사이즈를 조정한다.
-        self.digitButton = [x for x in range(0, 9)]
+        self.digitButton = [x for x in range(9)]
         for i in range(9):
             self.digitButton[i] = QToolButton()
             self.digitButton[i].setIconSize(QtCore.QSize(150, 150))  # 버튼 사이즈 150X150
 
         numLayout = QGridLayout() # QGridLayout을 만들어 버튼들을 배열함
 
-        numLayout.addWidget(self.digitButton[0], 0, 0)
-        self.digitButton[0].setShortcut("Q")  # setShortcut을 이용해 해당 key랑 버튼이랑 연결시킴
-        numLayout.addWidget(self.digitButton[1], 0, 1)
-        self.digitButton[1].setShortcut("W")
-        numLayout.addWidget(self.digitButton[2], 0, 2)
-        self.digitButton[2].setShortcut("E")
-        numLayout.addWidget(self.digitButton[3], 1, 0)
-        self.digitButton[3].setShortcut("A")
-        numLayout.addWidget(self.digitButton[4], 1, 1)
-        self.digitButton[4].setShortcut("S")
-        numLayout.addWidget(self.digitButton[5], 1, 2)
-        self.digitButton[5].setShortcut("D")
-        numLayout.addWidget(self.digitButton[6], 2, 0)
-        self.digitButton[6].setShortcut("Z")
-        numLayout.addWidget(self.digitButton[7], 2, 1)
-        self.digitButton[7].setShortcut("X")
-        numLayout.addWidget(self.digitButton[8], 2, 2)
-        self.digitButton[8].setShortcut("C")
+        keyPad = ['Q', 'W', 'E', 'A', 'S', 'D', 'Z', 'X', 'C']
+
+        for i in range(9):
+            self.digitButton[i].setShortcut(keyPad[i])  # key와 버튼을 연결
+            if i // 3 == 0:
+                numLayout.addWidget(self.digitButton[i], 0, i)
+            elif i // 3 == 1:
+                numLayout.addWidget(self.digitButton[i], 1, i - 3)
+            else:
+                numLayout.addWidget(self.digitButton[i], 2, i - 6)
 
         # 귀신 나타나게 하기 이 부분은 나중에 수정하도록 한다.
         GhostLocation = self.digitButton[random.randint(0, 8)]  # 귀신이 나타날 장소 랜덤으로 정하기
 
-        a = QtGui.QIcon('ghost.png')
-        b = QtGui.QIcon('greenEye.png')
-        c = QtGui.QIcon('bigEye.png')
+        originalEye = QtGui.QIcon('ghost.png')
+        greenEye = QtGui.QIcon('greenEye.png')
+        bigEye = QtGui.QIcon('bigEye.png')
 
-        GhostLocation.setIcon(a)
-        GhostLocation.setIcon(b)
-        GhostLocation.setIcon(c)
+        GhostLocation.setIcon(originalEye)
+        GhostLocation.setIcon(greenEye)
+        GhostLocation.setIcon(bigEye)
 
-        ghostType = [a, a, a, a, b, b, b, c, c]
-        random.shuffle(ghostType) # ghostType 의 리스트 원소를 섞는 역할
-        self.digitButton[0].setIcon(ghostType[0])
-        self.digitButton[1].setIcon(ghostType[1])
-        self.digitButton[2].setIcon(ghostType[2])
-        self.digitButton[3].setIcon(ghostType[3])
-        self.digitButton[4].setIcon(ghostType[4])
-        self.digitButton[5].setIcon(ghostType[5])
-        self.digitButton[6].setIcon(ghostType[6])
-        self.digitButton[7].setIcon(ghostType[7])
-        self.digitButton[8].setIcon(ghostType[8])
+        ghostType = [originalEye, originalEye, originalEye, originalEye, greenEye, greenEye, greenEye, bigEye, bigEye]
+        random.shuffle(ghostType)  # ghostType 의 리스트 원소를 섞는 역할
+        for i in range(9):
+            self.digitButton[i].setIcon(ghostType[i])
 
         mainLayout.addLayout(numLayout, 1, 0)
+
+        # scr = QLabel()
+        # scr.setText('')
+        #
+        # if originalEye.clicked():
+        #     originalEye.clicked.connect(Score().plusFiveScore())
+        #     scr.setText(Score.score)
+        #
+        # elif greenEye.clicked():
+        #     greenEye.clicked.connect(Score().plusTenScore())
+        #     scr.setText(Score.score)
+        #
+        # elif bigEye.clicked():
+        #     bigEye.clicked.connect(Score().minusFiveScore())
+        #     scr.setText(Score.score)
+        #
+        # else:
+        #     scr.setText("Input 오류 입니다")
+        # mainLayout.addWidget(scr, 2, 0)
+
 
 
 if __name__ == '__main__':
